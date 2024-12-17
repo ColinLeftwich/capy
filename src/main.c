@@ -1,23 +1,31 @@
-#include<stdio.h>
+#include<stdio.h> 
 // I don't what I am doing :D
 
-int main(int argc, char **argv) {
-    for (int arg = 1; arg <= argc - 1; arg++) {
-        FILE * file_ptr = fopen(argv[arg], "r");
+void print_stdin() {
+    char buffer[256];
+    while(fgets(buffer, sizeof(buffer), stdin)) {
+        printf("%s", buffer);
+    }
+}
 
-        if (file_ptr == NULL) {
+int main(int argc, char **argv) {
+    if (argc < 2) {
+        print_stdin();
+        return 0;
+    }
+
+    for (int arg = 1; arg <= argc - 1; arg++) {
+        FILE * file_prt = freopen(argv[arg], "r", stdin);
+
+        if (file_prt == NULL) {
             printf("capy: ");
             printf("%s: ", argv[arg]);
             printf("No such file or directory\n");
             return 1;
         }
 
-        char buffer[256];
-        while(fgets(buffer, sizeof(buffer), file_ptr)) {
-            printf("%s", buffer);
-        }
-
-        fclose(file_ptr);
+        print_stdin();
+        fclose(file_prt);
     }
 
     return 0;
